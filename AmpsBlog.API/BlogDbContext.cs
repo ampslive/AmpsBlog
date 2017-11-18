@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using AmpsBlog.Models;
 
 namespace AmpsBlog.API
 {
@@ -8,5 +9,8 @@ namespace AmpsBlog.API
         {
             
         }
+
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
     }
 }
