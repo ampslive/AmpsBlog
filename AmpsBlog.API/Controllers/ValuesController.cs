@@ -25,8 +25,13 @@ namespace AmpsBlog.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]string value)
         {
+            if(value == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         // PUT api/values/5
