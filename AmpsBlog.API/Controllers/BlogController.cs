@@ -20,16 +20,30 @@ namespace AmpsBlog.API.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var blogs = await _context.Blogs.ToListAsync();
+
+            if(blogs.Count == 0)
+            {
+                return new NoContentResult();
+            }
+
+            return new OkObjectResult(blogs);
         }
 
         // GET api/Blog/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int? id)
         {
-            return "value";
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id);
+
+            return new OkObjectResult(blog);
         }
 
         // POST api/Blog
@@ -65,8 +79,8 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            //existingBlog.Name = (blog.Name != null) ? blog.Name : existingBlog.Name;
-            //existingBlog.Description = (blog.Description != null) ? blog.Description : existingBlog.Description;
+            existingBlog.Name = (blog.Name != null) ? blog.Name : existingBlog.Name;
+            existingBlog.Description = (blog.Description != null) ? blog.Description : existingBlog.Description;
             existingBlog.DateModified = DateTime.UtcNow;
             
             _context.Update(existingBlog);
