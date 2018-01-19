@@ -83,7 +83,7 @@ namespace AmpsBlog.API.Controllers
             {
                 return NotFound();
             }
-            return View(post);
+            return new OkObjectResult(post);
         }
 
         // POST: Posts/Edit/5
@@ -122,6 +122,7 @@ namespace AmpsBlog.API.Controllers
         }
 
         // GET: Posts/Delete/5
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
