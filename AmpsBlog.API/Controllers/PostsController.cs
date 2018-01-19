@@ -52,12 +52,11 @@ namespace AmpsBlog.API.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Post([FromBody] Post post1)
+        public async Task<IActionResult> Post([FromBody] Post post)
         {
             //Id,Title,Content,Status,DateCreated,DateModified,IsActive
             if (ModelState.IsValid)
             {
-                var post = new Post();
                 post.DateCreated = DateTime.UtcNow;
                 post.DateModified = DateTime.UtcNow;
                 post.IsActive = true;
@@ -65,8 +64,9 @@ namespace AmpsBlog.API.Controllers
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
+                return new AcceptedResult();
             }
-            return new AcceptedResult();
+            return NotFound();
         }
 
         // GET: api/Posts/5
