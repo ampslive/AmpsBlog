@@ -19,7 +19,7 @@ namespace AmpsBlog.API
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
         }
@@ -31,7 +31,7 @@ namespace AmpsBlog.API
         {
             services.AddMvc();
 
-            services.Configure<ConnectionSettings>(Configuration.GetSection("ConnectionStrings:DefaultConnection"));
+            services.Configure<ConnectionSettings>(Configuration.GetSection("ConnectionStrings"));
 
             services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

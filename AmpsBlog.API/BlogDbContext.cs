@@ -18,10 +18,10 @@ namespace AmpsBlog.API
             this.config = Config;
         }
 
-        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
-        {
+        // public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
+        // {
 
-        }
+        // }
 
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }

@@ -10,14 +10,20 @@ using Microsoft.EntityFrameworkCore;
 namespace AmpsBlog.API.Controllers
 {
     [Route("api/[controller]")]
-    public class BlogController : Controller
+    public class BlogsController : Controller
     {
         public readonly BlogDbContext _context;
         private UnitOfWork _unitOfWork;
         
-        public BlogController()
+        // public BlogController()
+        // {
+        //     _context = new BlogDbContext();
+        //     _unitOfWork = new UnitOfWork(_context);
+        // }
+
+        public BlogsController(BlogDbContext context)
         {
-            _context = new BlogDbContext();
+            _context = context;
             _unitOfWork = new UnitOfWork(_context);
         }
 
