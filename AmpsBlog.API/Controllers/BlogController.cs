@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AmpsBlog.Models;
+using AmpsBlog.Models.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,17 +13,19 @@ namespace AmpsBlog.API.Controllers
     public class BlogController : Controller
     {
         public readonly BlogDbContext _context;
-
-        public BlogController(BlogDbContext context)
+        private UnitOfWork _unitOfWork;
+        
+        public BlogController()
         {
-            _context = context;
+            _context = new BlogDbContext();
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         // GET api/values
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var blogs = await _context.Blogs.ToListAsync();
+            var blogs = await _unitOfWork.Blogs.GetAll();
 
             if(blogs.Count == 0)
             {
@@ -41,7 +44,7 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id);
+            var blog = await _unitOfWork.Blogs.Get(id);
 
             return new OkObjectResult(blog);
         }
@@ -56,8 +59,8 @@ namespace AmpsBlog.API.Controllers
                 blog.DateModified = DateTime.UtcNow;
                 blog.IsActive = true;
                 
-                _context.Add(blog);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Blogs.Add(blog);
+                await _unitOfWork.SaveAsync();
                 //return RedirectToAction(nameof(Index));
                 return new AcceptedResult();
             }
@@ -73,7 +76,7 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var existingBlog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == id);
+            var existingBlog = await _unitOfWork.Blogs.Get(id);
             if(existingBlog == null)
             {
                 return NotFound();
@@ -83,8 +86,8 @@ namespace AmpsBlog.API.Controllers
             existingBlog.Description = (blog.Description != null) ? blog.Description : existingBlog.Description;
             existingBlog.DateModified = DateTime.UtcNow;
             
-            _context.Update(existingBlog);
-            await _context.SaveChangesAsync();
+            //_context.Update(existingBlog);
+            await _unitOfWork.SaveAsync();
 
             return new OkObjectResult(blog);
         }

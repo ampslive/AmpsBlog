@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AmpsBlog.Models
 {
@@ -17,5 +18,9 @@ namespace AmpsBlog.Models
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public bool IsActive { get; set; }
+
+        public int BlogId { get; set; }
+        [ForeignKey("BlogId")]
+        public Blog Blog { get; set; }
     }
 }
