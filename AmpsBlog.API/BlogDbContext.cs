@@ -28,7 +28,7 @@ namespace AmpsBlog.API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = config.Value.ToString();
+            var connectionString = config.Value.DefaultConnection;
             optionsBuilder.UseSqlServer(connectionString);
         }
 

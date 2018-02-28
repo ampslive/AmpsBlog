@@ -18,6 +18,7 @@ namespace AmpsBlog.API.Controllers
         public PostsController(BlogDbContext context)
         {
             _context = context;
+            //var con = context.
         }
 
         // GET: api/Posts
