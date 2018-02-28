@@ -1,4 +1,4 @@
-using AmpsBlog.Models;
+using AmpsBlog.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

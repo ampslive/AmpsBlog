@@ -1,6 +1,6 @@
 using System;
 
-namespace AmpsBlog.Models
+namespace AmpsBlog.API.Constants
 {
     public enum PostStatus
     {

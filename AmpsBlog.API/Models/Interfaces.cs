@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AmpsBlog.API.Models;
 
-namespace AmpsBlog.Models
+namespace AmpsBlog.API.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : class
     {

@@ -3,8 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using AmpsBlog.API.Constants;
 
-namespace AmpsBlog.Models
+namespace AmpsBlog.API.Models
 {
     public class Post
     {

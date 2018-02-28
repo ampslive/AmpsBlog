@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace AmpsBlog.Models
+namespace AmpsBlog.API.Models
 {
     public class Blog
     {
@@ -33,7 +33,7 @@ namespace AmpsBlog.Models
 
         public async Task<List<Blog>> GetAll()
         {
-            return await _context.Blogs.ToListAsync();
+             return await _context.Blogs.ToListAsync();
         }
 
         public async Task<Blog> GetById(int id)

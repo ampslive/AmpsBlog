@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AmpsBlog.Models;
-using AmpsBlog.Models.Repositories;
+using AmpsBlog.API.Models;
+using AmpsBlog.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

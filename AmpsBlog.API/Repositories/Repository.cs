@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AmpsBlog.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AmpsBlog.Models.Repositories
+namespace AmpsBlog.API.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {

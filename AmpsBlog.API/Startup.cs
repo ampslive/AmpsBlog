@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AmpsBlog.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,7 @@ namespace AmpsBlog.API
         {
             services.AddMvc();
 
-            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings:DefaultConnection"));
+            services.Configure<ConnectionSettings>(Configuration.GetSection("ConnectionStrings:DefaultConnection"));
 
             services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
@@ -48,9 +47,6 @@ namespace AmpsBlog.API
             app.UseMvc();
         }
 
-        private class ConnectionStrings
-        {
-            public string DefaultConnection { get; set; }
-        }
+        
     }
 }

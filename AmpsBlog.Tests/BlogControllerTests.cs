@@ -10,7 +10,7 @@ namespace AmpsBlog.Tests
 {
     public class BlogControllerTests
     {
-        public BlogDbContext dbContext;
+        //public BlogDbContext dbContext;
 
         [Fact]
         public async void PassingTest()

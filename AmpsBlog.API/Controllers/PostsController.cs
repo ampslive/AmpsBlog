@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AmpsBlog.API;
-using AmpsBlog.Models;
+using AmpsBlog.API.Models;
 
 namespace AmpsBlog.API.Controllers
 {
