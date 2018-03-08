@@ -80,57 +80,27 @@ namespace AmpsBlog.API.Controllers
 
         // GET: api/Posts/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int? id)
+        public async Task<IActionResult> Put(int? id, [FromBody] Post post)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _unitOfWork.Posts.Get(id);
-            if (post == null)
+            var existingPost = await _unitOfWork.Posts.Get(id);
+            if (existingPost == null)
             {
                 return NotFound();
             }
 
-            //TODO: Update object for Post
+            existingPost.Title = (post.Title != null) ? post.Title : existingPost.Title;
+            existingPost.Content = (post.Content != null) ? post.Content : existingPost.Content;
+            existingPost.Status = (post.Status != null) ? post.Status : existingPost.Status;
+            existingPost.DateModified = DateTime.UtcNow;
 
-            return new OkObjectResult(post);
-        }
+            await _unitOfWork.SaveAsync();
 
-        // POST: Posts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Status,DateCreated,DateModified,IsActive")] Post post)
-        {
-            if (id != post.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostExists(post.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-            }
-            return View(post);
+            return new OkObjectResult(existingPost);
         }
 
         // GET: Posts/Delete/5
@@ -142,30 +112,16 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            var existingPost = await _unitOfWork.Posts.Get(id);
+            if (existingPost == null)
             {
                 return NotFound();
             }
 
-            return View(post);
-        }
-
-        // POST: Posts/Delete/5
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> DeleteConfirmed(int id)
-        // {
-        //     var post = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
-        //     _context.Posts.Remove(post);
-        //     await _context.SaveChangesAsync();
-        //     //return RedirectToAction(nameof(Index));
-        // }
-
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.Id == id);
+           //existingPost.IsActive = false;
+            _unitOfWork.Posts.Remove(existingPost);
+            await _unitOfWork.SaveAsync();
+            return new AcceptedResult();
         }
     }
 }

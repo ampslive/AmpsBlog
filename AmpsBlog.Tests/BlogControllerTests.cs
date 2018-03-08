@@ -1,17 +1,24 @@
 using System;
 using Xunit;
 using AmpsBlog.API.Controllers;
-using AmpsBlog.Models;
+using AmpsBlog.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AmpsBlog.API.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AmpsBlog.Tests
 {
     public class BlogControllerTests
     {
+        private readonly DbContext _dbContext;
         //public BlogDbContext dbContext;
 
+        public BlogControllerTests(DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         [Fact]
         public async void PassingTest()
         {
@@ -31,6 +38,9 @@ namespace AmpsBlog.Tests
             // var test = res as Blog;
             //Assert.Equal("Hello Blog", r2.Name);
            
+            IBlogRepository blog = new BlogRepository(_dbContext);
+            var blogs = await blog.GetAll();
+            Assert.NotNull(blogs);
         }
 
         
