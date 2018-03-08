@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AmpsBlog.API.Interfaces;
+using AmpsBlog.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AmpsBlog.API.Repositories
@@ -9,6 +10,7 @@ namespace AmpsBlog.API.Repositories
     {
         private readonly DbContext _dbContext;
         public IBlogRepository Blogs { get ; set; }
+        public IRepository<Post> Posts { get ; set; }
 
         public UnitOfWork()
         {
@@ -18,6 +20,7 @@ namespace AmpsBlog.API.Repositories
         {
             _dbContext = dbContext;
             Blogs = new BlogRepository(_dbContext);
+            Posts = new PostRepository(_dbContext);
         }
 
         public async Task<int> SaveAsync()

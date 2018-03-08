@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AmpsBlog.API;
 using AmpsBlog.API.Models;
+using AmpsBlog.API.Repositories;
 
 namespace AmpsBlog.API.Controllers
 {
@@ -15,17 +16,25 @@ namespace AmpsBlog.API.Controllers
     {
         private readonly BlogDbContext _context;
 
+        private UnitOfWork _unitOfWork;
         public PostsController(BlogDbContext context)
         {
             _context = context;
-            //var con = context.
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<IEnumerable<Post>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _context.Posts.ToListAsync();
+            var posts =  await _unitOfWork.Posts.GetAll();
+
+            if(posts.Count == 0)
+            {
+                return new NoContentResult();
+            }
+
+            return new OkObjectResult(posts);
         }
 
         // GET: api/Posts/5
@@ -37,8 +46,7 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var post = await _unitOfWork.Posts.Get(id);
             if (post == null)
             {
                 return NotFound();
@@ -62,8 +70,8 @@ namespace AmpsBlog.API.Controllers
                 post.DateModified = DateTime.UtcNow;
                 post.IsActive = true;
 
-                _context.Add(post);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Posts.Add(post);
+                await _unitOfWork.SaveAsync();
                 //return RedirectToAction(nameof(Index));
                 return new AcceptedResult();
             }
@@ -79,11 +87,14 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
+            var post = await _unitOfWork.Posts.Get(id);
             if (post == null)
             {
                 return NotFound();
             }
+
+            //TODO: Update object for Post
+
             return new OkObjectResult(post);
         }
 
