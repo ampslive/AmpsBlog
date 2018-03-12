@@ -8,11 +8,7 @@ namespace AmpsBlog.API
     {
 
         private readonly IOptions<ConnectionSettings> config;
-        public BlogDbContext()
-        {
-
-        }
-
+        
         public BlogDbContext(IOptions<ConnectionSettings> Config)
         {
             this.config = Config;

@@ -8,19 +8,19 @@ namespace AmpsBlog.API.Repositories
 {
     public class UnitOfWork : IUnitofWork
     {
-        private readonly DbContext _dbContext;
+        private readonly BlogDbContext _dbContext;
         public IBlogRepository Blogs { get ; set; }
         public IRepository<Post> Posts { get ; set; }
 
         public UnitOfWork()
         {
-            //_dbContext = new BlogDbContext(string connectionString);
+            //Blogs = new BlogRepository(_dbContext);
         }
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(BlogDbContext dbContext)
         {
             _dbContext = dbContext;
             Blogs = new BlogRepository(_dbContext);
-            Posts = new PostRepository(_dbContext);
+            Posts = new Repository<Post>(_dbContext);
         }
 
         public async Task<int> SaveAsync()

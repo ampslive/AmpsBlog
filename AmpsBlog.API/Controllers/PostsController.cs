@@ -8,19 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using AmpsBlog.API;
 using AmpsBlog.API.Models;
 using AmpsBlog.API.Repositories;
+using AmpsBlog.API.Interfaces;
 
 namespace AmpsBlog.API.Controllers
 {
     [Route("api/[controller]")]
     public class PostsController : Controller
     {
-        private readonly BlogDbContext _context;
-
-        private UnitOfWork _unitOfWork;
-        public PostsController(BlogDbContext context)
+        private readonly IUnitofWork _unitOfWork;
+        public PostsController(IUnitofWork unitOfWork)
         {
-            _context = context;
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Posts

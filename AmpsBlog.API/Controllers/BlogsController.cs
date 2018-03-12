@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AmpsBlog.API.Interfaces;
 using AmpsBlog.API.Models;
 using AmpsBlog.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +13,10 @@ namespace AmpsBlog.API.Controllers
     [Route("api/[controller]")]
     public class BlogsController : Controller
     {
-        public readonly BlogDbContext _context;
-        private UnitOfWork _unitOfWork;
-        
-        // public BlogController()
-        // {
-        //     _context = new BlogDbContext();
-        //     _unitOfWork = new UnitOfWork(_context);
-        // }
-
-        public BlogsController(BlogDbContext context)
+        public readonly IUnitofWork _unitOfWork;
+        public BlogsController(IUnitofWork unitOfWork)
         {
-            _context = context;
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = unitOfWork;
         }
 
         // GET api/values
@@ -107,15 +99,15 @@ namespace AmpsBlog.API.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == id);
+            //var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == id);
 
-            if(blog == null)
-            {
-                return NotFound();
-            }
+            // if(blog == null)
+            // {
+            //     return NotFound();
+            // }
 
-            _context.Blogs.Remove(blog);
-            await _context.SaveChangesAsync();
+            //_context.Blogs.Remove(blog);
+            //await _context.SaveChangesAsync();
             return new AcceptedResult();
         }
     }

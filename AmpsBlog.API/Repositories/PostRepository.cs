@@ -9,7 +9,7 @@ namespace AmpsBlog.API.Repositories
 {
     public class PostRepository : Repository<Post>
     {
-        public DbContext BlogDbContext { get { return _dbContext as DbContext; } }
+        public DbContext DbContext { get { return _dbContext as DbContext; } }
 
         public PostRepository(DbContext dbContext) : base(dbContext)
         {

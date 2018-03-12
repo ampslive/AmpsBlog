@@ -7,7 +7,7 @@ namespace AmpsBlog.API.Models
 {
     public class Blog
     {
-        public readonly BlogDbContext _context;
+        private readonly BlogDbContext _context;
         public Blog()
         {
 

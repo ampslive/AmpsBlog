@@ -22,6 +22,7 @@ namespace AmpsBlog.API.Interfaces
     public interface IUnitofWork : IDisposable
     {
         IBlogRepository Blogs { get; set; }
+        IRepository<Post> Posts { get; set; }
 
         Task<int> SaveAsync();
     }
