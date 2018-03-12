@@ -37,16 +37,15 @@ namespace AmpsBlog.Tests
             var response = blogController.Get();
             
             //Act
-
-            Task<IActionResult> bbb = blogController.Get();
+            Task<IActionResult> controller = blogController.Get();
             
-            var bb = bbb.Result as OkObjectResult;
+            var result = controller.Result as OkObjectResult;
             
-            var b = bb.Value as List<Blog>;
+            var blogList = result.Value as List<Blog>;
 
             //Assert
             await Assert.IsAssignableFrom<Task<IActionResult>>(response);
-            Assert.Equal(b.First().Name, "Blog 1");
+            Assert.Equal(blogList.First().Name, "Blog 1");
         }
 
         
