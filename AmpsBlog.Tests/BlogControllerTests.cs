@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using AmpsBlog.API.Models;
 using System.Linq;
+using AmpsBlog.API;
 
 namespace AmpsBlog.Tests
 {
@@ -18,22 +19,7 @@ namespace AmpsBlog.Tests
         [Fact]
         public async void PassingTest()
         {
-            //var controller = new BlogController(new BlogDbContext());
-            //var actionResult = await controller.Get(2);
-            
-            //var result = (actionResult as IActionResult);
-            
-            
-
-            //var r1 = result;
-            //Assert.NotNull(actionResult);
-            //var r2 = r1.Value as Blog;
-
-            // var res = Assert.IsAssignableFrom<Task<IActionResult>>(response);
-            // //var assignable = Assert.IsAssignableFrom<IEnumerable<Blog>>(res.ToString());
-            // var test = res as Blog;
-            //Assert.Equal("Hello Blog", r2.Name);
-            var mockBlogRepo = new Mock<BlogRepository>();
+            var mockBlogRepo = new Mock<IUnitofWork>();
             var blogs = new List<Blog>(){
                 new Blog {
                     Id = 1,
@@ -46,17 +32,21 @@ namespace AmpsBlog.Tests
             };
 
             
-            mockBlogRepo.Setup(m=>m.GetAll()).Returns(Task.FromResult(blogs));
-            //var blogController = new BlogsController();
-
+            mockBlogRepo.Setup(m=>m.Blogs.GetAll()).Returns(Task.FromResult(blogs));
+            var blogController = new BlogsController(mockBlogRepo.Object);
+            var response = blogController.Get();
+            
             //Act
-            //var result = await blogController.Get();
+
+            Task<IActionResult> bbb = blogController.Get();
+            
+            var bb = bbb.Result as OkObjectResult;
+            
+            var b = bb.Value as List<Blog>;
 
             //Assert
-            //var r = Assert.IsAssignableFrom<List<Blog>>(result);
-            
-            //var blogResult = Assert.IsAssignableFrom<List<Blog>>(r.Value);
-            //Assert.Equal(blogResult.Count, 2);
+            await Assert.IsAssignableFrom<Task<IActionResult>>(response);
+            Assert.Equal(b.First().Name, "Blog 1");
         }
 
         
